@@ -20,60 +20,68 @@ public class BulletController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        DestroyAfterRange();
+        //DestroyAfterRange();
     }
 
-    private void DestroyAfterRange()
-    {
-        var currentPos = gameObject.transform.position;
-        var initPos = Bullet.InitialPosition;
-        switch (Bullet.Direction)
-        {
-            case Direction.Down:
-                if (initPos.y - MaxRange >= currentPos.y)
-                {
-                    Destroy(gameObject);
-                }
+    //private void DestroyAfterRange()
+    //{
+    //    var currentPos = gameObject.transform.position;
+    //    var initPos = Bullet.InitialPosition;
+    //    switch (Bullet.Direction)
+    //    {
+    //        case Direction.Down:
+    //            if (initPos.y - MaxRange >= currentPos.y)
+    //            {
+    //                Destroy(gameObject);
+    //            }
 
-                break;
-            case Direction.Up:
-                if (initPos.y + MaxRange <= currentPos.y)
-                {
-                    Destroy(gameObject);
-                }
+    //            break;
+    //        case Direction.Up:
+    //            if (initPos.y + MaxRange <= currentPos.y)
+    //            {
+    //                Destroy(gameObject);
+    //            }
 
-                break;
-            case Direction.Left:
-                if (initPos.x - MaxRange >= currentPos.x)
-                {
-                    Destroy(gameObject);
-                }
+    //            break;
+    //        case Direction.Left:
+    //            if (initPos.x - MaxRange >= currentPos.x)
+    //            {
+    //                Destroy(gameObject);
+    //            }
 
-                break;
-            case Direction.Right:
-                if (initPos.x + MaxRange <= currentPos.x)
-                {
-                    Destroy(gameObject);
-                }
+    //            break;
+    //        case Direction.Right:
+    //            if (initPos.x + MaxRange <= currentPos.x)
+    //            {
+    //                Destroy(gameObject);
+    //            }
 
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
-    }
+    //            break;
+    //        default:
+    //            throw new ArgumentOutOfRangeException();
+    //    }
+    //}
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        TankController tc = collision.gameObject.GetComponent<TankController>();
-        if (isGiveDamage)
+        if (collision.gameObject.tag.Contains("Player"))
         {
-            tc.Death();
-            Destroy(gameObject);
+            TankController tc = collision.gameObject.GetComponent<TankController>();
+            if (isGiveDamage)
+            {
+                tc.Death();
+                Destroy(gameObject);
+            }
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         isGiveDamage = true;
+    }
+
+    private void OnBecameInvisible()
+    {
+        Destroy(gameObject);
     }
 }

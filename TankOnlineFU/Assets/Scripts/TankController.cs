@@ -1,5 +1,6 @@
 using DefaultNamespace;
 using Entity;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -26,8 +27,9 @@ public class TankController : MonoBehaviour
 
     public Sprite tankExp;
     private AudioSource expAudio;
-
     private bool isAlive = true;
+
+    private GameManager gameManager;
 
     private void Start()
     {
@@ -45,6 +47,8 @@ public class TankController : MonoBehaviour
         //_cameraController = camera.GetComponent<CameraController>();
         _renderer = gameObject.GetComponent<SpriteRenderer>();
         expAudio = GetComponent<AudioSource>();
+        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+
         Move(Direction.Down);
 
 
@@ -132,5 +136,23 @@ public class TankController : MonoBehaviour
     private void DestroyTank()
     {
         Destroy(gameObject);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        TankFirer tf = GetComponent<TankFirer>();
+        if (collision.gameObject.CompareTag("PowerUp Bullet"))
+        {
+            tf.delay = 0.5f;
+            Destroy(collision.gameObject);
+            gameManager.isPowerUpSpawn = false;
+            StartCoroutine(ResetPowerUp(tf));
+        }
+    }
+
+    IEnumerator ResetPowerUp(TankFirer tf)
+    {
+        yield return new WaitForSeconds(5f);
+        tf.delay = 1f;
     }
 }

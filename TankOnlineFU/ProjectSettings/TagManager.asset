@@ -9,6 +9,10 @@ TagManager:
   - bulletEnemy
   - Player2
   - Player1
+  - Wall
+  - PowerUp Bullet
+  - PowerUp Damage
+  - Heal
   layers:
   - Default
   - TransparentFX
