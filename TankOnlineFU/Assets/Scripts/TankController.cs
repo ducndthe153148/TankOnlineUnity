@@ -7,66 +7,99 @@ using UnityEngine;
 public class TankController : MonoBehaviour
 {
     // Start is called before the first frame update
-    private Tank _tank;
+    public Tank tank;
 
     public Sprite tankUp;
     public Sprite tankDown;
     public Sprite tankLeft;
     public Sprite tankRight;
     private TankMover _tankMover;
-    private CameraController _cameraController;
+    public int HP = 10;
+    //private CameraController _cameraController;
     private SpriteRenderer _renderer;
-    public new GameObject camera;
+
+    KeyCode keyCodeLeft;
+    KeyCode keyCodeRight;
+    KeyCode keyCodeUp;
+    KeyCode keyCodeDown;
+    KeyCode keyFire;
+
+    public Sprite tankExp;
+    private AudioSource expAudio;
+
+    private bool isAlive = true;
 
     private void Start()
     {
-        _tank = new Tank
+        tank = new Tank
         {
             Name = "Default",
             Direction = Direction.Down,
             Hp = 10,
             Point = 0,
-            Position = new Vector3(Random.Range(0, 20), Random.Range(0, 20), 0),
+            Position = transform.position,
             Guid = GUID.Generate()
         };
-        gameObject.transform.position = _tank.Position;
+        gameObject.transform.position = tank.Position;
         _tankMover = gameObject.GetComponent<TankMover>();
-        _cameraController = camera.GetComponent<CameraController>();
+        //_cameraController = camera.GetComponent<CameraController>();
         _renderer = gameObject.GetComponent<SpriteRenderer>();
+        expAudio = GetComponent<AudioSource>();
         Move(Direction.Down);
+
+
+        if (gameObject.CompareTag("Player1"))
+        {
+            keyCodeLeft = KeyCode.A;
+            keyCodeRight = KeyCode.D;
+            keyCodeUp = KeyCode.W;
+            keyCodeDown = KeyCode.S;
+            keyFire = KeyCode.Space;
+        }
+        else
+        {
+            keyCodeLeft = KeyCode.LeftArrow;
+            keyCodeRight = KeyCode.RightArrow;
+            keyCodeUp = KeyCode.UpArrow;
+            keyCodeDown = KeyCode.DownArrow;
+            keyFire = KeyCode.Return;
+        }
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+        if (isAlive)
         {
-            Move(Direction.Left);
-        }
-        else if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
-        {
-            Move(Direction.Down);
-        }
-        else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
-        {
-            Move(Direction.Right);
-        }
-        else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
-        {
-            Move(Direction.Up);
-        }
+            if (Input.GetKey(keyCodeLeft))
+            {
+                Move(Direction.Left);
+            }
+            else if (Input.GetKey(keyCodeDown))
+            {
+                Move(Direction.Down);
+            }
+            else if (Input.GetKey(keyCodeRight))
+            {
+                Move(Direction.Right);
+            }
+            else if (Input.GetKey(keyCodeUp))
+            {
+                Move(Direction.Up);
+            }
 
-        if (Input.GetKey(KeyCode.Space))
-        {
-            Fire();
+            if (Input.GetKey(keyFire))
+            {
+                Fire();
+            }
         }
     }
 
     private void Move(Direction direction)
     {
-        _tank.Position = _tankMover.Move(direction);
-        _tank.Direction = direction;
-        _cameraController.Move(_tank.Position);
+        tank.Position = _tankMover.Move(direction);
+        tank.Direction = direction;
+        //_cameraController.Move(_tank.Position);
         _renderer.sprite = direction switch
         {
             Direction.Down => tankDown,
@@ -81,10 +114,23 @@ public class TankController : MonoBehaviour
     {
         var b = new Bullet
         {
-            Direction = _tank.Direction,
-            Tank = _tank,
-            InitialPosition = _tank.Position
+            Direction = tank.Direction,
+            Tank = tank,
+            InitialPosition = tank.Position
         };
         GetComponent<TankFirer>().Fire(b);
+    }
+
+    public void Death()
+    {
+        isAlive = false;
+        _renderer.sprite = tankExp;
+        expAudio.Play();
+        Invoke("DestroyTank", 0.5f);
+    }
+
+    private void DestroyTank()
+    {
+        Destroy(gameObject);
     }
 }

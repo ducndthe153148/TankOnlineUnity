@@ -7,6 +7,8 @@ TagManager:
   - Enemy
   - bullet
   - bulletEnemy
+  - Player2
+  - Player1
   layers:
   - Default
   - TransparentFX

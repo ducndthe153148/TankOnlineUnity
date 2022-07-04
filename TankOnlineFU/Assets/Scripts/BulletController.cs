@@ -10,6 +10,8 @@ public class BulletController : MonoBehaviour
 
     public int MaxRange { get; set; }
 
+    private Boolean isGiveDamage = false;
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -58,5 +60,20 @@ public class BulletController : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException();
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        TankController tc = collision.gameObject.GetComponent<TankController>();
+        if (isGiveDamage)
+        {
+            tc.Death();
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        isGiveDamage = true;
     }
 }
