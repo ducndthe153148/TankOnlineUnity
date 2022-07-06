@@ -4,6 +4,7 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TankController : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class TankController : MonoBehaviour
     KeyCode keyFire;
 
     public Sprite tankExp;
+    private Slider slider;
     private AudioSource expAudio;
     private bool isAlive = true;
 
@@ -48,6 +50,17 @@ public class TankController : MonoBehaviour
         _renderer = gameObject.GetComponent<SpriteRenderer>();
         expAudio = GetComponent<AudioSource>();
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+
+        if (gameObject.CompareTag("Player1"))
+        {
+            slider = (Slider)FindObjectsOfType(typeof(Slider)) [1];
+        }
+        else if (gameObject.CompareTag("Player2"))
+        {
+            slider = (Slider)FindObjectsOfType(typeof(Slider)) [0];
+        }
+
+        slider.value = 10;
 
         Move(Direction.Down);
 
@@ -125,7 +138,18 @@ public class TankController : MonoBehaviour
         GetComponent<TankFirer>().Fire(b);
     }
 
-    public void Death()
+    public void TakeDamage()
+    {
+        tank.Hp--;
+        slider.value = tank.Hp;
+        Debug.Log(tank.Hp);
+        if(tank.Hp <= 0)
+        {
+            Death();
+        }
+    }
+
+    private void Death()
     {
         isAlive = false;
         _renderer.sprite = tankExp;
@@ -135,6 +159,17 @@ public class TankController : MonoBehaviour
 
     private void DestroyTank()
     {
+        if (gameObject.CompareTag("Player1"))
+        {
+            Score.SCORE_PLAYER2++;
+            Debug.Log(Score.SCORE_PLAYER2);
+        }
+        else
+        {
+            Score.SCORE_PLAYER1++;
+            Debug.Log(Score.SCORE_PLAYER1);
+        }
+        
         Destroy(gameObject);
     }
 
