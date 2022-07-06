@@ -13,6 +13,8 @@ TagManager:
   - PowerUp Bullet
   - PowerUp Damage
   - Heal
+  - Heart_Player1
+  - Heart_Player2
   layers:
   - Default
   - TransparentFX
