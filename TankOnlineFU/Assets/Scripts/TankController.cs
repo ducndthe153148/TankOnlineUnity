@@ -20,6 +20,8 @@ public class TankController : MonoBehaviour
     //private CameraController _cameraController;
     private SpriteRenderer _renderer;
 
+    public Slider[] sliderAll;
+
     KeyCode keyCodeLeft;
     KeyCode keyCodeRight;
     KeyCode keyCodeUp;
@@ -28,10 +30,13 @@ public class TankController : MonoBehaviour
 
     public Sprite tankExp;
     private Slider slider;
+    private Text score;
     private AudioSource expAudio;
     private bool isAlive = true;
+    private float timePowerUp = 0f;
 
     private GameManager gameManager;
+    private TankFirer tf;
 
     private void Start()
     {
@@ -41,6 +46,7 @@ public class TankController : MonoBehaviour
             Direction = Direction.Down,
             Hp = 10,
             Point = 0,
+            Damage = 1,
             Position = transform.position,
             Guid = GUID.Generate()
         };
@@ -50,14 +56,17 @@ public class TankController : MonoBehaviour
         _renderer = gameObject.GetComponent<SpriteRenderer>();
         expAudio = GetComponent<AudioSource>();
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        tf = GetComponent<TankFirer>();
 
         if (gameObject.CompareTag("Player1"))
         {
-            slider = (Slider)FindObjectsOfType(typeof(Slider)) [1];
+            slider = GameObject.Find("HeartBar_Player1").GetComponent<Slider>();
+            score = GameObject.Find("Score_Player2").GetComponent<Text>();
         }
         else if (gameObject.CompareTag("Player2"))
         {
-            slider = (Slider)FindObjectsOfType(typeof(Slider)) [0];
+            slider = GameObject.Find("HeartBar_Player2").GetComponent<Slider>();
+            score = GameObject.Find("Score_Player1").GetComponent<Text>();
         }
 
         slider.value = 10;
@@ -109,6 +118,15 @@ public class TankController : MonoBehaviour
             {
                 Fire();
             }
+
+            if(timePowerUp > 0)
+            {
+                timePowerUp -= Time.deltaTime;
+            }
+            else
+            {
+                ResetPowerUp();
+            }
         }
     }
 
@@ -140,7 +158,7 @@ public class TankController : MonoBehaviour
 
     public void TakeDamage()
     {
-        tank.Hp--;
+        tank.Hp-=tank.Damage;
         slider.value = tank.Hp;
         Debug.Log(tank.Hp);
         if(tank.Hp <= 0)
@@ -162,11 +180,13 @@ public class TankController : MonoBehaviour
         if (gameObject.CompareTag("Player1"))
         {
             Score.SCORE_PLAYER2++;
+            score.text = Score.SCORE_PLAYER2 + "";
             Debug.Log(Score.SCORE_PLAYER2);
         }
         else
         {
             Score.SCORE_PLAYER1++;
+            score.text = Score.SCORE_PLAYER1 + "";
             Debug.Log(Score.SCORE_PLAYER1);
         }
         
@@ -175,19 +195,18 @@ public class TankController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        TankFirer tf = GetComponent<TankFirer>();
+        
         if (collision.gameObject.CompareTag("PowerUp Bullet"))
         {
             tf.delay = 0.5f;
             Destroy(collision.gameObject);
             gameManager.isPowerUpSpawn = false;
-            StartCoroutine(ResetPowerUp(tf));
+            timePowerUp = 5f;
         }
     }
 
-    IEnumerator ResetPowerUp(TankFirer tf)
+    void ResetPowerUp()
     {
-        yield return new WaitForSeconds(5f);
         tf.delay = 1f;
     }
 }

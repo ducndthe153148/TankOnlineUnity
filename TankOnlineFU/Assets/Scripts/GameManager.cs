@@ -7,11 +7,12 @@ public class GameManager : MonoBehaviour
     public GameObject player1Prefag;
     public GameObject player2Prefag;
 
-    public GameObject[] powerUp;
+    public GameObject box;
+    
     public bool isPowerUpSpawn = false;
 
     private float delayPowerUp = 10f;
-    private float countTime = 0f;
+    public float countTime = 0f;
 
     private GameObject player1;
     private GameObject player2;
@@ -26,7 +27,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         countTime += Time.deltaTime;
-        if(player1 == null || player2 == null)
+        if (player1 == null || player2 == null)
         {
             ReviveTank();
             FindingTank();
@@ -44,7 +45,7 @@ public class GameManager : MonoBehaviour
     void ReviveTank()
     {
         float randomX = Random.Range(-11f, 11f);
-        float randomY = Random.Range(-4f, 4f);
+        float randomY = Random.Range(-2.48f, 2.48f);
         if (player1 == null)
         {
             GameObject tank = Instantiate(player1Prefag, new Vector3(randomX, randomY), new Quaternion(0, 0, 0, 0));
@@ -60,11 +61,15 @@ public class GameManager : MonoBehaviour
     void SpawnPowerUp()
     {
         float randomX = Random.Range(-11f, 11f);
-        float randomY = Random.Range(-4f, 4f);
-        int index = Random.Range(0, powerUp.Length);
-        Debug.Log(index);
-        Instantiate(powerUp[index], new Vector3(randomX, randomY), new Quaternion(0, 0, 0, 0));
+        float randomY = Random.Range(-2.48f, 2.48f);
+        Instantiate(box, new Vector3(randomX, randomY), new Quaternion(0, 0, 0, 0));
         countTime = 0f;
         isPowerUpSpawn = true;
+
+        //int index = Random.Range(0, powerUp.Length);
+        //Debug.Log(index);
+        //Instantiate(powerUp[index], new Vector3(randomX, randomY), new Quaternion(0, 0, 0, 0));
+        //countTime = 0f;
+        //isPowerUpSpawn = true;
     }
 }

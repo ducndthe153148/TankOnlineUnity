@@ -118,6 +118,9 @@ MonoBehaviour:
   tankLeft: {fileID: 21300000, guid: 13bdef6e50b2c4a339bafdc7f7f58ff4, type: 3}
   tankRight: {fileID: 21300000, guid: f59f1eac0661d4c9ba950e0e5d444b6d, type: 3}
   HP: 10
+  sliderAll:
+  - {fileID: 0}
+  - {fileID: 0}
   tankExp: {fileID: 21300000, guid: 11be129c16114401796b80f3a731c488, type: 3}
 --- !u!114 &3216505252829382652
 MonoBehaviour:
@@ -160,7 +163,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &3216505252829382528
 BoxCollider2D:
   m_ObjectHideFlags: 0

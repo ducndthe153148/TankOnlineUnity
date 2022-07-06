@@ -73,6 +73,12 @@ public class BulletController : MonoBehaviour
                 Destroy(gameObject);
             }
         }
+        if (collision.gameObject.CompareTag("Box"))
+        {
+            BoxController bc = collision.gameObject.GetComponent<BoxController>();
+            bc.DropPowerUp();
+            Destroy(gameObject);
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)

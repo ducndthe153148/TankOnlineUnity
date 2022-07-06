@@ -11,6 +11,7 @@ namespace Entity
         public string Name { get; set; }
         public int Point { get; set; }
         public int Hp { get; set; }
+        public int Damage { get; set; }
 
         public GUID Guid { get; set; }
         public Vector3 Position { get; set; }

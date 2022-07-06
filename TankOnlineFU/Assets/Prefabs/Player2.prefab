@@ -108,7 +108,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &4454993834847376038
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -152,6 +152,7 @@ MonoBehaviour:
   tankLeft: {fileID: 21300000, guid: 12ab9f9eed1094c54945e97669ccae02, type: 3}
   tankRight: {fileID: 21300000, guid: d1e5bfe0793af45329ebdc66aef22b6f, type: 3}
   HP: 10
+  sliderAll: []
   tankExp: {fileID: 21300000, guid: 11be129c16114401796b80f3a731c488, type: 3}
 --- !u!114 &4454993834847376042
 MonoBehaviour:
