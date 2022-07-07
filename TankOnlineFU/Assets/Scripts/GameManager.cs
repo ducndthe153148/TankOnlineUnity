@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public GameObject player1Prefag;
     public GameObject player2Prefag;
+    public GameObject canvas;
 
     public GameObject box;
     
@@ -48,12 +49,12 @@ public class GameManager : MonoBehaviour
         float randomY = Random.Range(-2.48f, 2.48f);
         if (player1 == null)
         {
-            GameObject tank = Instantiate(player1Prefag, new Vector3(randomX, randomY), new Quaternion(0, 0, 0, 0));
+            GameObject tank = Instantiate(player1Prefag, new Vector3(randomX, randomY), new Quaternion(0, 0, 0, 0), canvas.transform);
             tank.name = "Player1";
         }
         if (player2 == null)
         {
-            GameObject tank = Instantiate(player2Prefag, new Vector3(randomX, randomY), new Quaternion(0, 0, 0, 0));
+            GameObject tank = Instantiate(player2Prefag, new Vector3(randomX, randomY), new Quaternion(0, 0, 0, 0), canvas.transform);
             tank.name = "Player2";
         }
     }
