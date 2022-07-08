@@ -99,6 +99,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   powerUp:
   - {fileID: 8936850962613117147, guid: 09273fdcbd87f104cbd4e8cec6f32625, type: 3}
+  - {fileID: 6809566000067442350, guid: 691cf151c4eb39a498705265d03e52d9, type: 3}
+  - {fileID: 5439715283789780126, guid: 9206c90ab92e4bb43a677046b0d1d4e8, type: 3}
 --- !u!61 &4853274705801917072
 BoxCollider2D:
   m_ObjectHideFlags: 0

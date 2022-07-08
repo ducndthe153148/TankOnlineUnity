@@ -69,7 +69,7 @@ public class BulletController : MonoBehaviour
             TankController tc = collision.gameObject.GetComponent<TankController>();
             if (isGiveDamage)
             {
-                tc.TakeDamage();
+                tc.TakeDamage(Bullet.Tank);
                 Destroy(gameObject);
             }
         }

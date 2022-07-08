@@ -1,19 +1,14 @@
 fileFormatVersion: 2
-guid: 623dc26265f4acc4b9df2363cd2fd30f
-labels:
-- sound
-- sfx
-- shooter
-- shump
+guid: 7e5dd52c2896bcc4dbf14ae84909ef4e
 AudioImporter:
   externalObjects: {}
   serializedVersion: 6
   defaultSettings:
-    loadType: 1
+    loadType: 0
     sampleRateSetting: 0
-    sampleRateOverride: 0
-    compressionFormat: 0
-    quality: 0.5
+    sampleRateOverride: 44100
+    compressionFormat: 1
+    quality: 1
     conversionMode: 0
   platformSettingOverrides: {}
   forceToMono: 0
@@ -21,7 +16,7 @@ AudioImporter:
   preloadAudioData: 1
   loadInBackground: 0
   ambisonic: 0
-  3D: 0
+  3D: 1
   userData: 
   assetBundleName: 
   assetBundleVariant: 

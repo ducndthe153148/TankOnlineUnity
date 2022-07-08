@@ -236,6 +236,8 @@ MonoBehaviour:
   HP: 10
   sliderAll: []
   tankExp: {fileID: 21300000, guid: 11be129c16114401796b80f3a731c488, type: 3}
+  expAudioClip: {fileID: 8300000, guid: e93d5cbd4a12fe540a2b627c99c00b85, type: 3}
+  powerAudioClip: {fileID: 8300000, guid: afecfd6daca73407892e22dac32b164b, type: 3}
 --- !u!114 &5104834685896250010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -280,10 +282,10 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 05e969172b1426843a2bed02c899529d, type: 3}
+  m_audioClip: {fileID: 8300000, guid: e93d5cbd4a12fe540a2b627c99c00b85, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
-  m_Pitch: 1
+  m_Pitch: 2
   Loop: 0
   Mute: 0
   Spatialize: 0

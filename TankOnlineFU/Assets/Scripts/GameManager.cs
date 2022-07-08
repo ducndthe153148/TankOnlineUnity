@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class GameManager : MonoBehaviour
     public GameObject canvas;
 
     public GameObject box;
-    
+
     public bool isPowerUpSpawn = false;
 
     private float delayPowerUp = 10f;
@@ -18,23 +19,40 @@ public class GameManager : MonoBehaviour
     private GameObject player1;
     private GameObject player2;
 
+
+    public GameObject winner;
+    public bool isGameOver = false;
+    public string nameWinner;
+
     // Start is called before the first frame update
     void Start()
     {
         FindingTank();
+        //winner = GameObject.Find("Winner");
     }
 
     // Update is called once per frame
     void Update()
     {
-        countTime += Time.deltaTime;
-        if (player1 == null || player2 == null)
+        if (!isGameOver)
         {
-            ReviveTank();
-            FindingTank();
+            countTime += Time.deltaTime;
+            if (player1 == null || player2 == null)
+            {
+                ReviveTank();
+                FindingTank();
+            }
+            if (isPowerUpSpawn || countTime < delayPowerUp) return;
+            SpawnPowerUp();
         }
-        if (isPowerUpSpawn || countTime < delayPowerUp) return;
-        SpawnPowerUp();
+        else
+        {
+            if (!winner.active)
+            {
+                winner.SetActive(true);
+                winner.GetComponent<Text>().text = nameWinner + " Win";
+            }
+        }
     }
 
     void FindingTank()

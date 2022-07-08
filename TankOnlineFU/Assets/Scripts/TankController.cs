@@ -17,10 +17,12 @@ public class TankController : MonoBehaviour
     public Sprite tankRight;
     private TankMover _tankMover;
     public int HP = 10;
+    
     //private CameraController _cameraController;
     private SpriteRenderer _renderer;
 
     public Slider[] sliderAll;
+    public int winPoint;
 
     KeyCode keyCodeLeft;
     KeyCode keyCodeRight;
@@ -31,7 +33,9 @@ public class TankController : MonoBehaviour
     public Sprite tankExp;
     private Slider slider;
     private Text score;
-    private AudioSource expAudio;
+    private AudioSource audio;
+    public AudioClip expAudioClip;
+    public AudioClip powerAudioClip;
     private bool isAlive = true;
     private float timePowerUp = 0f;
 
@@ -50,11 +54,12 @@ public class TankController : MonoBehaviour
             Position = transform.position,
             Guid = GUID.Generate()
         };
+        winPoint = 3;
         gameObject.transform.position = tank.Position;
         _tankMover = gameObject.GetComponent<TankMover>();
         //_cameraController = camera.GetComponent<CameraController>();
         _renderer = gameObject.GetComponent<SpriteRenderer>();
-        expAudio = GetComponent<AudioSource>();
+        audio = GetComponent<AudioSource>();
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         tf = GetComponent<TankFirer>();
 
@@ -95,7 +100,7 @@ public class TankController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (isAlive)
+        if (isAlive && !gameManager.isGameOver)
         {
             if (Input.GetKey(keyCodeLeft))
             {
@@ -156,9 +161,10 @@ public class TankController : MonoBehaviour
         GetComponent<TankFirer>().Fire(b);
     }
 
-    public void TakeDamage()
+    public void TakeDamage(Tank tankEnemy)
     {
-        tank.Hp-=tank.Damage;
+        if (gameManager.isGameOver) return;
+        tank.Hp-= tankEnemy.Damage;
         slider.value = tank.Hp;
         Debug.Log(tank.Hp);
         if(tank.Hp <= 0)
@@ -171,7 +177,8 @@ public class TankController : MonoBehaviour
     {
         isAlive = false;
         _renderer.sprite = tankExp;
-        expAudio.Play();
+        audio.clip = expAudioClip;
+        audio.Play();
         Invoke("DestroyTank", 0.5f);
     }
 
@@ -182,14 +189,23 @@ public class TankController : MonoBehaviour
             Score.SCORE_PLAYER2++;
             score.text = Score.SCORE_PLAYER2 + "";
             Debug.Log(Score.SCORE_PLAYER2);
+            if(Score.SCORE_PLAYER2 == winPoint)
+            {
+                gameManager.nameWinner = "Player 2";
+                gameManager.isGameOver = true;
+            }
         }
         else
         {
             Score.SCORE_PLAYER1++;
             score.text = Score.SCORE_PLAYER1 + "";
             Debug.Log(Score.SCORE_PLAYER1);
+            if (Score.SCORE_PLAYER1 == winPoint)
+            {
+                gameManager.nameWinner = "Player 1";
+                gameManager.isGameOver = true;
+            }
         }
-        
         Destroy(gameObject);
     }
 
@@ -198,15 +214,39 @@ public class TankController : MonoBehaviour
         
         if (collision.gameObject.CompareTag("PowerUp Bullet"))
         {
+            PlayAudioPowerUp();
             tf.delay = 0.5f;
             Destroy(collision.gameObject);
             gameManager.isPowerUpSpawn = false;
             timePowerUp = 5f;
         }
+        if (collision.gameObject.CompareTag("PowerUp Damage"))
+        {
+            PlayAudioPowerUp();
+            tank.Damage = 2;
+            Destroy(collision.gameObject);
+            gameManager.isPowerUpSpawn = false;
+            timePowerUp = 5f;
+        }
+        if (collision.gameObject.CompareTag("Heal"))
+        {
+            PlayAudioPowerUp();
+            tank.Hp += 2;
+            slider.value = tank.Hp;
+            Destroy(collision.gameObject);
+            gameManager.isPowerUpSpawn = false;
+        }
+    }
+
+    void PlayAudioPowerUp()
+    {
+        audio.clip = powerAudioClip;
+        audio.Play();
     }
 
     void ResetPowerUp()
     {
         tf.delay = 1f;
+        tank.Damage = 1;
     }
 }
