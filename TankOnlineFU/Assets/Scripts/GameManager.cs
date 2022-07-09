@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
 
 
     public GameObject winner;
+    public GameObject btnRetry;
     public bool isGameOver = false;
     public string nameWinner;
 
@@ -51,6 +52,7 @@ public class GameManager : MonoBehaviour
             {
                 winner.SetActive(true);
                 winner.GetComponent<Text>().text = nameWinner + " Win";
+                btnRetry.SetActive(true);
             }
         }
     }

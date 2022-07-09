@@ -48,7 +48,7 @@ public class TankController : MonoBehaviour
         {
             Name = "Default",
             Direction = Direction.Down,
-            Hp = 10,
+            Hp = 1,
             Point = 0,
             Damage = 1,
             Position = transform.position,
