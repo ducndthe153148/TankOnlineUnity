@@ -19,6 +19,8 @@ public class ResetController : MonoBehaviour
 
     public void ResetGame()
     {
+        Score.SCORE_PLAYER1 = 0;
+        Score.SCORE_PLAYER2 = 0;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
